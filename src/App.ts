@@ -1,27 +1,26 @@
 import * as express from 'express'
-import { connectToDatabase } from './connections/mongodb'
-import routes from './routes';
+import routes from './routes/index';
+import * as bodyParser from 'body-parser';
+
 class App {
   public express
   public db;
 
   constructor() {
     this.express = express()
-    connectToDatabase()
+    this.express.use(bodyParser.urlencoded({ extended: true }));
+    this.express.use(bodyParser.json());
+
+
     this.mountRoutes()
+
+
   }
 
   private mountRoutes(): void {
     const router = express.Router()
-    router.get('/', (req, res) => {
-      return res.status(200).json({
-        message: 'Hello World!'
-      })
-    })
 
-    this.express.use('/', router)
-
-    // import user routes
+    // import all routes routes
     this.express.use('/api', routes)
   }
 }
