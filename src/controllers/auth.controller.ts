@@ -2,6 +2,13 @@ import { User } from "../models/user.model";
 import { Request, Response } from 'express';
 import * as crypto from 'crypto';
 import * as jwt from 'jsonwebtoken'
+
+/**
+ * Middleware for user loggedIn
+ * @param req 
+ * @param res 
+ * @returns 
+ */
 const login = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
