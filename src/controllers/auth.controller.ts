@@ -26,12 +26,17 @@ const login = async (req: Request, res: Response) => {
         if (!isValidPassword) return res.status(401).json({ error: { message: 'Invalid Password' } });
 
         // generate jwt
-        const token = jwt.sign({ uid: user.get('_id') }, process.env.JWT_KEY, { expiresIn: '30m' });
+        const token = jwt.sign({ uid: user.get('_id'), email: user.get('email'), role: user.get('role') }, process.env.JWT_KEY, { expiresIn: '30m' });
         return res.status(200).json({ data: { token } });
     } catch (e) {
         console.log(e)
     }
 
 }
+
+// const sign_out = async (req: Request, res: Response) => {
+//     let token = req.headers['authorization'];
+//     console.log(token)
+// }
 
 export { login };

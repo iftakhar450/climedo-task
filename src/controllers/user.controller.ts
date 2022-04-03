@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import * as crypto from 'crypto';
 
 import { User, UserInput } from '../models/user.model';
+import { App_Constants } from '../config/constants';
 
 /**
  * Middleware to generate the password hash to store in database
@@ -51,21 +52,25 @@ const createUser = async (req: Request, res: Response) => {
 
 
 /**
- * Middleware to fetch all users
+ * Middleware to fetch all users for admin
  * @param req 
  * @param res 
  * @returns 
  */
 const getAllUsers = async (req: Request, res: Response) => {
-
-    let keys = { updatedAt: 0, password: 0, __v: 0 };
-    try {
-        const users = await User.find({}, keys).sort('-createdAt').exec();
-        if (users) return res.status(200).json({ users: users });
-        return res.status(200).json({ message: 'No user available' });
-    } catch (e) {
-        return res.status(400).json({ error: e })
+    if (req.body.user.role == App_Constants.ADMIN_ROLE) {
+        let keys = { updatedAt: 0, password: 0, __v: 0 };
+        try {
+            const users = await User.find({}, keys).sort('-createdAt').exec();
+            if (users) return res.status(200).json({ users: users });
+            return res.status(200).json({ message: 'No user available' });
+        } catch (e) {
+            return res.status(400).json({ error: e })
+        }
+    } else {
+        return res.status(200).json({ users: [] });
     }
+
 
 
 };
@@ -103,26 +108,31 @@ const getUser = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { dob, fullName, role } = req.body;
-
-    const user = await User.findOne({ _id: id });
-    if (!user) {
-        return res.status(404).json({ message: `User with id "${id}" not found.` });
-    }
-    if (!fullName || !role) {
-        return res.status(422).json({ message: 'The fields fullName,dob and role are required' });
-    }
-    try {
-        await User.updateOne({ _id: id }, { dob, fullName, role });
-        const userUpdated = await User.findById(id);
-        let user = {
-            fullName: userUpdated.fullName,
-            role: userUpdated.role,
-            dob: userUpdated.dob,
+    if (req.body.user.role == App_Constants.ADMIN_ROLE || id == req.body.user.uid) {
+        const user = await User.findOne({ _id: id });
+        if (!user) {
+            return res.status(404).json({ message: `User with id "${id}" not found.` });
         }
-        return res.status(200).json({ data: user });
-    } catch (e) {
-        return res.status(400).json({ error: e })
+        if (!fullName || !role) {
+            return res.status(422).json({ message: 'The fields fullName,dob and role are required' });
+        }
+        try {
+
+            await User.updateOne({ _id: id }, { dob, fullName, role });
+            const userUpdated = await User.findById(id);
+            let user = {
+                fullName: userUpdated.fullName,
+                role: userUpdated.role,
+                dob: userUpdated.dob,
+            }
+            return res.status(200).json({ data: user });
+        } catch (e) {
+            return res.status(400).json({ error: e })
+        }
+    } else {
+        return res.status(200).json({ message: `You are not allowed to perform this operation` });
     }
+
 
 };
 
@@ -135,13 +145,18 @@ const updateUser = async (req: Request, res: Response) => {
 
 const deleteUser = async (req: Request, res: Response) => {
     const { id } = req.params;
-    try {
-        await User.findByIdAndDelete(id);
-        return res.status(200).json({ message: 'User deleted successfully.' });
-    } catch (e) {
-        return res.status(400).json({ error: e })
+    if (req.body.user.role == App_Constants.ADMIN_ROLE) {
+        try {
+            await User.findByIdAndDelete(id);
+            return res.status(200).json({ message: 'User deleted successfully.' });
+        } catch (e) {
+            return res.status(400).json({ error: e })
+        }
+    } else {
+        return res.status(200).json({ message: `You are not allowed to perform this operation` });
     }
+
 
 };
 
-export { createUser, deleteUser, getAllUsers, getUser, updateUser };
+export { createUser, deleteUser, getAllUsers, getUser, updateUser, hashPassword };

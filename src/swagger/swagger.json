@@ -28,9 +28,9 @@
         "/login": {
             "post": {
                 "tags": [
-                    "Login"
+                    "Authentication"
                 ],
-                "summary": "Login Api",
+                "summary": "Login User Api",
                 "description": "User Login Api",
                 "produces": [
                     "application/json"
@@ -79,6 +79,7 @@
                 }
             }
         },
+       
         "/users": {
             "get": {
                 "security": [
@@ -424,6 +425,14 @@
             "type": "object",
             "properties": {
                 "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "logoutResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
                     "type": "string"
                 }
             }

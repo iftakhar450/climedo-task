@@ -16,6 +16,7 @@ const token_authentication = async (req: Request, res: Response, next: NextFunct
         if (token == null) return res.status(401).send('Authentication Token Required'); // if there isn't any token
         jwt.verify(token, process.env.JWT_KEY, (err, user) => {
             if (err) return res.status(403).send("Token Expired");
+            req.body.user = user;
             next();
         });
     } catch (e) {

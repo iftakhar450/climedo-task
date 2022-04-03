@@ -34,7 +34,7 @@ The application will be launched by [Nodemon](https://nodemon.com) so it's will 
 # Swagger  API Docs
 
 [Docs]:http://localhost:3000/api/docs/
-To open the api documentation please  click [here][docs]
+After successfully running the application to open the api documentation please  click [here][docs]
 
 # Contact
 
