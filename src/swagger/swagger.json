@@ -1,0 +1,498 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Climedo  task APIs Swagger Documentation",
+        "version": "1.0.0",
+        "title": "Tasks APIs",
+        "contact": {
+            "email": "iftakhar167@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "securityDefinitions": {
+        "jwt": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization"
+        }
+    },
+    "schemes": [
+        "http"
+    ],
+    "host": "localhost:3000",
+    "basePath": "/api",
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login User Api",
+                "description": "User Login Api",
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Login Detail",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "data": {
+                                    "type": "object",
+                                    "$ref": "#/definitions/loginResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        },
+       
+        "/users": {
+            "get": {
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get All User",
+                "description": "Get All User Api",
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/getAllUser"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Add New User",
+                "description": "Add New User Api",
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Required fields for user",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "fullName": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "dob": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/postUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete  User",
+                "description": "Delete  User Api",
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "User Id",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "items": {
+                                "id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/deleteUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update  User",
+                "description": "Update  User Api",
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "User Id",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "items": {
+                                "id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Required fields for user",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "fullName": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "string"
+                                },
+                                "dob": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/updateUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Invalid id value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Missing value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get user by id",
+                "description": "GGet user by id Api",
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "User Id",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "items": {
+                                "id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/getOneUser"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "updateUserResponse": {
+            "type": "object",
+            "properties": {
+                "fullName": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "dob": {
+                    "type": "string"
+                }
+            }
+        },
+        "deleteUserResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "postUserResponse": {
+            "type": "object",
+            "properties": {
+                "fullName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "dob": {
+                    "type": "string"
+                },
+                "_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "postUser": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "fullName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                }
+            }
+        },
+        "loginResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "logoutResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "getAllUser": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "fullName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "dob": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "getOneUser": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "fullName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "dob": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "InvalidResponse": {
+            "type": "object",
+            "properties": {
+                "statusCode": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -1,11 +1,11 @@
 import  { Schema, Model, Document } from 'mongoose';
 import * as mongoose from 'mongoose';
- 
 type UserDocument = Document & {
   fullName: string;
   email: string;
   password: string;
   enabled: string;
+  dob:Date
   role: string;
 };
 
@@ -13,7 +13,7 @@ type UserInput = {
   fullName: UserDocument['fullName'];
   email: UserDocument['email'];
   password: UserDocument['password'];
-  enabled: UserDocument['enabled'];
+  dob: UserDocument['dob'];
   role: UserDocument['role'];
 };
 
@@ -33,11 +33,14 @@ const usersSchema = new Schema(
       required: true,
     },
     role: {
-      type: Schema.Types.ObjectId,
-      ref: 'Role',
+      type: Schema.Types.String,
       required: true,
-      index: true,
     },
+    dob: {
+      type: Schema.Types.Date,
+      required: true,
+    },
+    
   },
   {
     collection: 'users',
