@@ -17,6 +17,7 @@ const login = async (req: Request, res: Response) => {
 
         // fetch user detail
         const user = await User.findOne({ email: email }).exec();
+        console.log(user)
         if (!user) {
             return res.status(404).json({ message: `User with Email "${email}" not found.` });
         }

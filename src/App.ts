@@ -32,8 +32,9 @@ class App {
 
 
     // Render the index page
-    this.express.use('/', (req, res) => {
+    this.express.get('/', (req, res) => {
       res.redirect('/api/docs');
+      // res.json({ message: "Running" })
     });
 
     // import all routes routes
