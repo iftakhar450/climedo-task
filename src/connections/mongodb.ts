@@ -22,7 +22,7 @@ export async function pushSeedData() {
                 })
                 .catch(error => {
                     if (error.code == Error_Codes.DUPLICATE_DATA)
-                        console.log(` Seed Data Available for ${element.role}`);
+                        console.log(`Seed Data Available for ${element.role}`);
                 })
         });
 

@@ -21,7 +21,7 @@ class App {
     this.express.use('/api/docs', swaggerUi.serve,
       swaggerUi.setup(this.swaggerDocument, null, null, this.customCss));
 
-
+    // import all routes
     this.mountRoutes()
 
 
@@ -29,6 +29,13 @@ class App {
 
   private mountRoutes(): void {
     const router = express.Router()
+
+
+    // Render the index page
+    this.express.use('/', (req, res) => {
+      res.redirect('/api/docs');
+    });
+
     // import all routes routes
     this.express.use('/api', routes)
   }
